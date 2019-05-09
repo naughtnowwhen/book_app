@@ -2,3 +2,8 @@ p {
   color: red;
   text-align: center;
 }
+
+* {
+  color: aqua;
+  background-color: blueviolet;
+}

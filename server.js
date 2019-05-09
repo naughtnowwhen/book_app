@@ -11,7 +11,7 @@ app.use(express.static('./public'));
 //set the view engine for templating;
 app.set('view engine', 'ejs');
 
-app.get('/hello', (request, response)=>{
+app.get('/', (request, response)=>{
   console.log('getting here');
   response.render('pages/index');
 })
