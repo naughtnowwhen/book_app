@@ -47,8 +47,8 @@ function searchGoogleBooks (request, response) {
 function Book(rawBookinfo) {
   const placeholderImage = 'https://i.imgur.com/J5LVHEL.jpg';
   this.title = rawBookinfo.title;
-  this.author = rawBookinfo.author;
-  this.isbn = rawBookinfo.isbn;
+  this.authors = rawBookinfo.authors[0];
+  this.isbn = rawBookinfo.industryIdentifiers[0].type;
   this.description = rawBookinfo.description;
   // this.image_url = rawBookinfo.image_url
   rawBookinfo.image_url ? this.image_url = rawBookinfo.image_url : placeholderImage;
