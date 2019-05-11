@@ -76,6 +76,14 @@ function Book(rawBookinfo) {
 // });
 
 //catch-all
-app.get('*', (request, response) => response.status(404).send('This route does not exist'));
 
-app.listen(PORT, () => console.log(`Listening on ${PORT}`));
+
+function handleError(error, response){
+  response.render('pages/error/', {error: 'Something went wrong'});
+}
+
+app.get('*', (request, response)=>response.status(404).send('This route does not exist'));
+
+
+app.listen(PORT, ()=> console.log(`Listening on ${PORT}`));
+
