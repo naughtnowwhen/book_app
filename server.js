@@ -40,6 +40,7 @@ function searchGoogleBooks(request, response) {
   superagent.get(url)
     .then(rawApiBookResponse => rawApiBookResponse.body.items.map(book => new Book(book.volumeInfo)))
     .then(results => response.render('pages/searches/show', { searchResults: results }))
+    .catch(err => handleError(err, response))
 }
 
 
