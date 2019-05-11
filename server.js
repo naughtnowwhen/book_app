@@ -54,18 +54,19 @@ function searchGoogleBooks(request, response) {
 //our book constructor (is this a helper function?)
 function Book(rawBookinfo) {
 
-  this.title = rawBookinfo.title ? rawBookinfo.title : 'No title Available'
-  this.authors = rawBookinfo.authors ? rawBookinfo.authors.join(',') : 'Unkown'
+  this.title = rawBookinfo.title ? rawBookinfo.title : 'No title Available';
+  this.authors = rawBookinfo.authors ? rawBookinfo.authors.join(',') : 'Unkown';
   //we probably need to put back isbn;  
-  this.description = rawBookinfo.description ? rawBookinfo.description : 'No description available'
-  this.image_url = rawBookinfo.imageLinks ? rawBookinfo.imageLinks.thumbnail : 'https://i.imgur.com/J5LVHEL.jpg'
+  this.description = rawBookinfo.description ? rawBookinfo.description : 'No description available';
+  this.image_url = rawBookinfo.imageLinks ? rawBookinfo.imageLinks.thumbnail : 'https://i.imgur.com/J5LVHEL.jpg';
+  rawBookinfo.industryIdentifiers[0].identifier ? this.ISBN_13 = rawBookinfo.industryIdentifiers[0].identifier : 'isbn unavailable';
   console.log(this.image_url[4]);
   if (this.image_url[4] === ':'){
     console.log('its http');
     this.image_url = this.image_url.replace('http', 'https');
   }
 
-  console.log(this.image_url);
+  console.log(this);
   // rawBookinfo.image_url ? this.image_url = rawBookinfo.image_url : placeholderImage;
   // console.log(this);
 }
