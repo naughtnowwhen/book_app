@@ -22,5 +22,16 @@ We're using express, ejs, superagent and the google books API.
 
 ## Credits and Collaborations
 <!-- Give credit (and a link) to other people or resources that helped you build this application. -->
+
+Number and name of feature: lab 12 SQL-ize
+
+Estimate of time needed to complete: maximum time. 
+
+Start time: 3:00pm
+
+Finish time: _____
+
+Actual time needed to complete: _____
+
 -->
 ```
