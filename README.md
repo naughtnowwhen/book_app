@@ -23,6 +23,8 @@ We're using express, ejs, superagent and the google books API.
 ## Credits and Collaborations
 <!-- Give credit (and a link) to other people or resources that helped you build this application. -->
 
+Our schema is called books.sql and is located in the data folder. It follows the order of the constructor. we also have a bookshelf property for later on so the user can keep their favorite books. 
+
 Number and name of feature: lab 12 SQL-ize
 
 Estimate of time needed to complete: maximum time. 

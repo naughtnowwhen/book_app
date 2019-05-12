@@ -1,15 +1,25 @@
 'use strict';
 //Application Dependencies
+
+//data\books.sql
 const express = require('express');
 const superagent = require('superagent');
+const pg = require('pg');
+require('dotenv').config();
 
 //Application Setup
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+
 //Application Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('./public'));
+
+//Database setup
+const client = new pg.Client(process.env.DATABASE_URL);
+client.connect();
+client.on('error', err=> console.error(err));
 
 //set the view engine for server side templating;
 app.set('view engine', 'ejs');
@@ -23,8 +33,13 @@ app.get('/', (request, response) => {
   response.render('pages/index');
 })
 
+app.get('/books/:book_id', getOneBook);
+
 //Creates a new search to the Google Books API
 app.post('/searches', searchGoogleBooks);
+
+app.get('add', showBook);
+app.post('/add', addBook);
 
 
 
@@ -57,7 +72,7 @@ function Book(rawBookinfo) {
 
   this.title = rawBookinfo.title ? rawBookinfo.title : 'No title Available';
   this.authors = rawBookinfo.authors ? rawBookinfo.authors.join(',') : 'Unkown';
-  //we probably need to put back isbn;  
+  //we probably need to put back isbn;
   this.description = rawBookinfo.description ? rawBookinfo.description : 'No description available';
   this.image_url = rawBookinfo.imageLinks ? rawBookinfo.imageLinks.thumbnail : 'https://i.imgur.com/J5LVHEL.jpg';
   rawBookinfo.industryIdentifiers[0].identifier ? this.ISBN_13 = rawBookinfo.industryIdentifiers[0].identifier : 'isbn unavailable';
@@ -70,6 +85,34 @@ function Book(rawBookinfo) {
   console.log(this);
   // rawBookinfo.image_url ? this.image_url = rawBookinfo.image_url : placeholderImage;
   // console.log(this);
+}
+
+function addBook (request, response) {
+  console.log(request.body);
+  let {title, authors, description, image_url, ISBN_13} = request.body;
+  let SQL = `INSERT INTO books (title, authors, description, image_url, ISBN_13) VALUES ($1,$2,$3,$4,$5);`;
+  let values = [title, authors, description, image_url, ISBN_13];
+  return client.query(SQL, values)
+    .then(result=>{
+      console.log(result);
+      response.redirect('/');
+    })
+    .catch(err=>handleError(err,response));
+}
+
+function showBook(request,response){
+  response.render('pages/show');
+}
+
+function getOneBook (request, response) {
+  console.log('book_id = ', request.params.book_id);
+  let SQL = `SELECT * FROM books where id=$1;`;
+  let values = [request.params.book_id];
+  return client.query(SQL,values)
+    .then(result=> {
+      return response.render('pages/new', {book : result.rows[0]});
+    })
+    .catch(err => handleError(err, response));
 }
 
 
