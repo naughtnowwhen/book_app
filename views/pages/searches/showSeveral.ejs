@@ -10,27 +10,63 @@
     <h1>Our Book List</h1>
     <p><a href="/">Home</a></p>
     <ul>
+      <script>
+      let holder = [];
+      </script>
       <% searchResults.forEach(item => { %>
-        <form action="/add" method="POST">  
-          <!-- <input type="text" name="ISBN_13" value= <%= item.ISBN_13 %>>
-          <input type="text" name="image_url" value= <%= item.image_url %>>
-          <input type="text" name="title" value= <%= item.title %>>
-          <input type="text" name="author" value= <%= item.author %>>
-          -->
-
-          <input type="hidden" name="description" value= <%=item.description %>> 
-
+        <!-- how do i send data like im trying to do below? -->
+        <script>
+        holder.push('<%= Object.entries(item) %>');
+        </script>
         <div id = <%= item.ISBN_13 %>>
           <img src=<%=item.image_url %>p
           <h3><%= item.title %></h3>
           <h4><%= item.author %></h4>
           <p><%= item.description %></p>
         </div>
-        <input type="submit" value="click to add the book to your faves">
+        <input type="button" value="clickToLog" onclick="logThisBook('<%= Object.entries(item)%>')">
+        <input type="button" value="sendData" onclick="ajaxThis('<%=JSON.stringify(item)%>')">
+        <!-- <input type="button" value="sendData" onclick="ajaxThis('<%=item %>')"> -->
+        <!-- <%= Object.entries(item)%> -->
+
       </form>
       
       <% }) %>
     </ul>
+
+    <script>
+
+      function logThisBook (book) {
+        console.log(book);
+      }
+
+      function ajaxThis (book) {
+        console.log(book);
+        //at this point book is good, it's in the proper stringified format
+        $.ajax({
+          url : '/displayOne',
+          type : 'POST',
+          data : book,
+        })
+      }
+
+      // function xhrThis (book) {
+      //   console.log(book);
+      //   let xhr = new XMLHttpRequest();
+      //   xhr.open('POST', '/displayOne', true)
+      //   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      //   let fullDeal = {"heresYourbook" : book};
+      //   xhr.send(fullDeal);
+      // }
+
+     
+    </script>
+
+    <!-- jquery cdn -->
+    <script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
   
 </body>
 </html>

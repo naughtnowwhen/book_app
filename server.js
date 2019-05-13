@@ -6,6 +6,7 @@ const express = require('express');
 const superagent = require('superagent');
 const pg = require('pg');
 require('dotenv').config();
+const bodyParser = require('body-parser');
 
 //Application Setup
 const app = express();
@@ -15,6 +16,8 @@ const PORT = process.env.PORT || 3000;
 //Application Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('./public'));
+app.use(bodyParser.json());
+
 
 //Database setup
 const client = new pg.Client(process.env.DATABASE_URL);
@@ -41,10 +44,19 @@ app.get('/allstoredbooks', getAllStoredBooks);
 app.get('/prepareToSearchFromAPI', showTheSearchForm);
 app.post('/searches', searchGoogleBooks);
 
-app.get('add', showBook);
+
+app.get('/add', showBook);
 app.post('/add', addBook);
 
+app.post('/displayOne', displayOnePost);
 
+function displayOnePost (req, res) {
+  //however here its breaking, the json is being broken up into bits on the url's = characters!
+  console.log(req.body);
+  // console.log(Object.keys(req.body)[0]);
+  // console.log(req.body);
+  // console.log(req.body.heresYourbook);
+}
 
 
 function searchGoogleBooks(request, response) {
@@ -99,7 +111,7 @@ function addBook (request, response) {
 }
 
 function showBook(request,response){
-  response.render('pages/show');
+  response.render('pages/show', {book : request.body});
 }
 
 function getOneBook (request, response) {
