@@ -34,8 +34,11 @@ app.get('/', (request, response) => {
 })
 
 app.get('/books/:book_id', getOneBook);
+app.get('/allstoredbooks', getAllStoredBooks);
+
 
 //Creates a new search to the Google Books API
+app.get('/prepareToSearchFromAPI', showTheSearchForm);
 app.post('/searches', searchGoogleBooks);
 
 app.get('add', showBook);
@@ -54,7 +57,7 @@ function searchGoogleBooks(request, response) {
 
   superagent.get(url)
     .then(rawApiBookResponse => rawApiBookResponse.body.items.map(book => new Book(book.volumeInfo)))
-    .then(results => response.render('pages/searches/show', { searchResults: results }))
+    .then(results => response.render('pages/searches/showSeveral', { searchResults: results }))
     .catch(err => handleError(err, response))
 }
 
@@ -78,17 +81,12 @@ function Book(rawBookinfo) {
   rawBookinfo.industryIdentifiers[0].identifier ? this.ISBN_13 = rawBookinfo.industryIdentifiers[0].identifier : 'isbn unavailable';
   console.log(this.image_url[4]);
   if (this.image_url[4] === ':'){
-    console.log('its http');
     this.image_url = this.image_url.replace('http', 'https');
   }
-
-  console.log(this);
-  // rawBookinfo.image_url ? this.image_url = rawBookinfo.image_url : placeholderImage;
-  // console.log(this);
 }
 
 function addBook (request, response) {
-  console.log(request.body);
+  console.log('request body line 86............ ', request.body);
   let {title, authors, description, image_url, ISBN_13} = request.body;
   let SQL = `INSERT INTO books (title, authors, description, image_url, ISBN_13) VALUES ($1,$2,$3,$4,$5);`;
   let values = [title, authors, description, image_url, ISBN_13];
@@ -110,9 +108,21 @@ function getOneBook (request, response) {
   let values = [request.params.book_id];
   return client.query(SQL,values)
     .then(result=> {
-      return response.render('pages/new', {book : result.rows[0]});
+      return response.render('pages/showOne', {book : result.rows[0]});
     })
     .catch(err => handleError(err, response));
+}
+
+function showTheSearchForm (request, response) {
+  response.render('pages/searches/new');
+}
+
+function getAllStoredBooks(request, response) {
+  let SQL = `SELECT * FROM books`;
+  return client.query(SQL)
+    .then(result=>{
+      return response.render('pages/searches/allSavedBooks', {databaseResults : result.rows})
+    })
 }
 
 
