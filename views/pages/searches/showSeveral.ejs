@@ -11,56 +11,34 @@
     <p><a href="/">Home</a></p>
     <ul>
       <script>
-      let holder = [];
       </script>
       <% searchResults.forEach(item => { %>
-        <!-- how do i send data like im trying to do below? -->
-        <script>
-        holder.push('<%= Object.entries(item) %>');
-        </script>
+
         <div id = <%= item.ISBN_13 %>>
           <img src=<%=item.image_url %>p
           <h3><%= item.title %></h3>
+          <!-- for some reason authors not working -->
           <h4><%= item.author %></h4>
           <p><%= item.description %></p>
         </div>
-        <input type="button" value="clickToLog" onclick="logThisBook('<%= Object.entries(item)%>')">
-        <input type="button" value="sendData" onclick="ajaxThis('<%=JSON.stringify(item)%>')">
-        <!-- <input type="button" value="sendData" onclick="ajaxThis('<%=item %>')"> -->
-        <!-- <%= Object.entries(item)%> -->
 
+        <form action="/add" method="POST" id="form<%=item.ISBN_13%>" style="display:none">
+        <input type="text" name="ISBN_13" value="<%=item.ISBN_13%>">
+        <input type="text" name="title" value="<%=item.title%>">
+        <input type="text" name="author" value="<%=item.author%>">
+        <!-- for some reason authors not working -->
+        <input type="text" name="description" value="<%=item.description%>">
+        <input type="text" name="image_url" value="<%=item.image_url%>">
+        <input type="submit" value="click me to add to the DB" id="">
       </form>
-      
+      <!-- this is bad and should be extraplated to one button that each book can call, but quick and dirty MVP for now -->
+      <button onclick="(function(){
+        console.log('anything');
+        console.log('form<%=item.ISBN_13%>');
+        document.getElementById('form<%=item.ISBN_13%>').style.display='block';
+        })()">click to view detail</button>      
       <% }) %>
     </ul>
-
-    <script>
-
-      function logThisBook (book) {
-        console.log(book);
-      }
-
-      function ajaxThis (book) {
-        console.log(book);
-        //at this point book is good, it's in the proper stringified format
-        $.ajax({
-          url : '/displayOne',
-          type : 'POST',
-          data : book,
-        })
-      }
-
-      // function xhrThis (book) {
-      //   console.log(book);
-      //   let xhr = new XMLHttpRequest();
-      //   xhr.open('POST', '/displayOne', true)
-      //   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-      //   let fullDeal = {"heresYourbook" : book};
-      //   xhr.send(fullDeal);
-      // }
-
-     
-    </script>
 
     <!-- jquery cdn -->
     <script

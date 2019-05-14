@@ -86,7 +86,7 @@ function searchGoogleBooks(request, response) {
 function Book(rawBookinfo) {
 
   this.title = rawBookinfo.title ? rawBookinfo.title : 'No title Available';
-  this.authors = rawBookinfo.authors ? rawBookinfo.authors.join(',') : 'Unkown';
+  this.author = rawBookinfo.authors ? rawBookinfo.authors[0] : 'Unkown';
   //we probably need to put back isbn;
   this.description = rawBookinfo.description ? rawBookinfo.description : 'No description available';
   this.image_url = rawBookinfo.imageLinks ? rawBookinfo.imageLinks.thumbnail : 'https://i.imgur.com/J5LVHEL.jpg';
@@ -99,13 +99,14 @@ function Book(rawBookinfo) {
 
 function addBook (request, response) {
   console.log('request body line 86............ ', request.body);
-  let {title, authors, description, image_url, ISBN_13} = request.body;
-  let SQL = `INSERT INTO books (title, authors, description, image_url, ISBN_13) VALUES ($1,$2,$3,$4,$5);`;
-  let values = [title, authors, description, image_url, ISBN_13];
-  return client.query(SQL, values)
+  let {title, author, description, image_url, ISBN_13} = request.body;
+  let SQL = `INSERT INTO books (title, author, description, image_url, ISBN_13) VALUES ($1,$2,$3,$4,$5);`;
+  let values = [title, author, description, image_url, ISBN_13];
+ return client.query(SQL, values)
     .then(result=>{
       console.log(result);
-      response.redirect('/');
+      //reaching a stopping point will come back
+      response.render('/pages/');
     })
     .catch(err=>handleError(err,response));
 }
