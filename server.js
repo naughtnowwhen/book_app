@@ -100,13 +100,15 @@ function Book(rawBookinfo) {
 function addBook (request, response) {
   console.log('request body line 86............ ', request.body);
   let {title, author, description, image_url, ISBN_13} = request.body;
-  let SQL = `INSERT INTO books (title, author, description, image_url, ISBN_13) VALUES ($1,$2,$3,$4,$5);`;
+  let SQL = 'INSERT INTO books (title, author, description, image_url, ISBN_13) VALUES ($1,$2,$3,$4,$5);';
   let values = [title, author, description, image_url, ISBN_13];
  return client.query(SQL, values)
     .then(result=>{
       console.log(result);
+      console.log('what');
+      
       //reaching a stopping point will come back
-      response.render('/pages/');
+      // response.render('/pages/');
     })
     .catch(err=>handleError(err,response));
 }
@@ -147,7 +149,8 @@ function getAllStoredBooks(request, response) {
 
 
 function handleError(error, response){
-  response.render('pages/error/', {error: 'Something went wrong'});
+  console.log(error);
+  // response.render('pages/error/', {error: 'Something went wrong'});
 }
 
 app.get('*', (request, response)=>response.status(404).send('This route does not exist'));
