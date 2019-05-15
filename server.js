@@ -103,9 +103,14 @@ function addBook (request, response) {
   let SQL = 'INSERT INTO books (title, author, description, image_url, ISBN_13) VALUES ($1,$2,$3,$4,$5);';
   let values = [title, author, description, image_url, ISBN_13];
  return client.query(SQL, values)
-    .then(result=>{
-      console.log(result);
-      console.log('what');
+    .then(result=>{ 
+      SQL = "SELECT * from books WHERE ISBN_13=$1";
+      values=[ISBN_13];
+      return client.query(SQL, values)
+      .then (resultNext => {
+        return response.render('pages/searches/showOne', {book: resultNext.rows[0]})
+      })
+
       
       //reaching a stopping point will come back
       // response.render('/pages/');
