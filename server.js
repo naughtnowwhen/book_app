@@ -104,8 +104,7 @@ function addBook (request, response) {
   let values = [title, author, description, image_url, ISBN_13];
  return client.query(SQL, values)
     .then(result=>{
-      console.log(result);
-      console.log('what');
+
       
       //reaching a stopping point will come back
       // response.render('/pages/');
