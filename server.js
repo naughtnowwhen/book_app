@@ -102,12 +102,10 @@ function addBook (request, response) {
   let {title, author, description, image_url, ISBN_13} = request.body;
   let SQL = 'INSERT INTO books (title, author, description, image_url, ISBN_13) VALUES ($1,$2,$3,$4,$5);';
   let values = [title, author, description, image_url, ISBN_13];
- return client.query(SQL, values)
+  return client.query(SQL, values)
     .then(result=>{
 
-      
       //reaching a stopping point will come back
-      // response.render('/pages/');
     })
     .catch(err=>handleError(err,response));
 }

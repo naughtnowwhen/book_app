@@ -15,26 +15,26 @@
       <% searchResults.forEach(item => { %>
 
         <div id = <%= item.ISBN_13 %>>
-          <img src=<%=item.image_url %>p
+          <img src=<%=item.image_url %>
           <h3><%= item.title %></h3>
           <!-- for some reason authors not working -->
           <h4><%= item.author %></h4>
           <p><%= item.description %></p>
         </div>
 
-        <form action="/add" method="POST" id="form<%=item.ISBN_13%>" style="display:none">
+        <form action="/add" method="POST" id="form<%=item.ISBN_13%>"style="display:none">
         <input type="text" name="ISBN_13" value="<%=item.ISBN_13%>">
         <input type="text" name="title" value="<%=item.title%>">
         <input type="text" name="author" value="<%=item.author%>">
         <!-- for some reason authors not working -->
         <input type="text" name="description" value="<%=item.description%>">
         <input type="text" name="image_url" value="<%=item.image_url%>">
-        <input type="submit" value="click me to add to the DB" id="">
+        <input type="text" name="bookshelfID" value="please enter a bookshelf">
+        <input type="submit" value="click me to add to the DB">
+
       </form>
       <!-- this is bad and should be extraplated to one button that each book can call, but quick and dirty MVP for now -->
       <button onclick="(function(){
-        console.log('anything');
-        console.log('form<%=item.ISBN_13%>');
         document.getElementById('form<%=item.ISBN_13%>').style.display='block';
         })()">click to view detail</button>      
       <% }) %>
