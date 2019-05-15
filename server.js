@@ -6,6 +6,7 @@ const express = require('express');
 const superagent = require('superagent');
 const pg = require('pg');
 require('dotenv').config();
+const bodyParser = require('body-parser');
 
 //Application Setup
 const app = express();
@@ -15,6 +16,8 @@ const PORT = process.env.PORT || 3000;
 //Application Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('./public'));
+app.use(bodyParser.json());
+
 
 //Database setup
 const client = new pg.Client(process.env.DATABASE_URL);
@@ -41,10 +44,19 @@ app.get('/allstoredbooks', getAllStoredBooks);
 app.get('/prepareToSearchFromAPI', showTheSearchForm);
 app.post('/searches', searchGoogleBooks);
 
-app.get('add', showBook);
+
+app.get('/add', showBook);
 app.post('/add', addBook);
 
+app.post('/displayOne', displayOnePost);
 
+function displayOnePost (req, res) {
+  //however here its breaking, the json is being broken up into bits on the url's = characters!
+  console.log(req.body);
+  // console.log(Object.keys(req.body)[0]);
+  // console.log(req.body);
+  // console.log(req.body.heresYourbook);
+}
 
 
 function searchGoogleBooks(request, response) {
@@ -74,7 +86,7 @@ function searchGoogleBooks(request, response) {
 function Book(rawBookinfo) {
 
   this.title = rawBookinfo.title ? rawBookinfo.title : 'No title Available';
-  this.authors = rawBookinfo.authors ? rawBookinfo.authors.join(',') : 'Unkown';
+  this.author = rawBookinfo.authors ? rawBookinfo.authors[0] : 'Unkown';
   //we probably need to put back isbn;
   this.description = rawBookinfo.description ? rawBookinfo.description : 'No description available';
   this.image_url = rawBookinfo.imageLinks ? rawBookinfo.imageLinks.thumbnail : 'https://i.imgur.com/J5LVHEL.jpg';
@@ -87,19 +99,22 @@ function Book(rawBookinfo) {
 
 function addBook (request, response) {
   console.log('request body line 86............ ', request.body);
-  let {title, authors, description, image_url, ISBN_13} = request.body;
-  let SQL = `INSERT INTO books (title, authors, description, image_url, ISBN_13) VALUES ($1,$2,$3,$4,$5);`;
-  let values = [title, authors, description, image_url, ISBN_13];
-  return client.query(SQL, values)
+  let {title, author, description, image_url, ISBN_13} = request.body;
+  let SQL = 'INSERT INTO books (title, author, description, image_url, ISBN_13) VALUES ($1,$2,$3,$4,$5);';
+  let values = [title, author, description, image_url, ISBN_13];
+ return client.query(SQL, values)
     .then(result=>{
       console.log(result);
-      response.redirect('/');
+      console.log('what');
+      
+      //reaching a stopping point will come back
+      // response.render('/pages/');
     })
     .catch(err=>handleError(err,response));
 }
 
 function showBook(request,response){
-  response.render('pages/show');
+  response.render('pages/show', {book : request.body});
 }
 
 function getOneBook (request, response) {
@@ -134,7 +149,8 @@ function getAllStoredBooks(request, response) {
 
 
 function handleError(error, response){
-  response.render('pages/error/', {error: 'Something went wrong'});
+  console.log(error);
+  // response.render('pages/error/', {error: 'Something went wrong'});
 }
 
 app.get('*', (request, response)=>response.status(404).send('This route does not exist'));
