@@ -1,50 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
 </head>
+
 <body>
-    <h1>Our Book List</h1>
-    <p><a href="/">Home</a></p>
-    <ul>
-      <script>
-      </script>
-      <% searchResults.forEach(item => { %>
+  <h1>Our Book List</h1>
+  <p><a href="/">Home</a></p>
+  <ul>
+    <script>
 
-        <div id = <%= item.ISBN_13 %>>
-          <img src=<%=item.image_url %>p
-          <h3><%= item.title %></h3>
-          <!-- for some reason authors not working -->
-          <h4><%= item.author %></h4>
-          <p><%= item.description %></p>
-        </div>
 
-        <form action="/add" method="POST" id="form<%=item.ISBN_13%>" style="display:none">
-        <input type="text" name="ISBN_13" value="<%=item.ISBN_13%>">
-        <input type="text" name="title" value="<%=item.title%>">
-        <input type="text" name="author" value="<%=item.author%>">
-        <!-- for some reason authors not working -->
-        <input type="text" name="description" value="<%=item.description%>">
-        <input type="text" name="image_url" value="<%=item.image_url%>">
-        <input type="submit" value="click me to add to the DB" id="">
-      </form>
-      <!-- this is bad and should be extraplated to one button that each book can call, but quick and dirty MVP for now -->
-      <button onclick="(function(){
-        console.log('anything');
-        console.log('form<%=item.ISBN_13%>');
-        document.getElementById('form<%=item.ISBN_13%>').style.display='block';
-        })()">click to view detail</button>      
-      <% }) %>
-    </ul>
+    </script>
+    <% searchResults.forEach(item => { %>
 
-    <!-- jquery cdn -->
-    <script
-  src="https://code.jquery.com/jquery-3.4.1.js"
-  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-  crossorigin="anonymous"></script>
+    <div id=<%= item.ISBN_13 %>>
+      <img src=<%=item.image_url %>p <h3><%= item.title %></h3>
+      <!-- for some reason authors not working -->
+      <h4><%= item.author %></h4>
+      <p><%= item.description %></p>
+    </div>
+
+    <form action="/add" method="POST" id="form<%=item.ISBN_13%>" style="display:none">
+      <input type="text" name="ISBN_13" value="<%=item.ISBN_13%>">
+      <input type="text" name="title" value="<%=item.title%>">
+      <input type="text" name="author" value="<%=item.author%>">
+      <!-- for some reason authors not working -->
+      <input type="text" name="description" value="<%=item.description%>">
+      <input type="text" name="image_url" value="<%=item.image_url%>">
+      <input type="submit" value="click me to add to the DB" id="">
+     
+
+
+      
+    </form>
+    <!-- this is bad and should be extraplated to one button that each book can call, but quick and dirty MVP for now -->
+    <button onclick="(function(){
+      console.log('anything');
+      console.log('form<%=item.ISBN_13%>');
+      document.getElementById('form<%=item.ISBN_13%>').style.display='block';
+      })()">click to view detail</button>
+    <% }) %>
+  </ul>
+
+
   
+
+  <!-- jquery cdn -->
+  <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous"></script>
+
 </body>
+
 </html>

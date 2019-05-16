@@ -73,6 +73,7 @@ function searchGoogleBooks(request, response) {
     .catch(err => handleError(err, response))
 }
 
+//some comment so i can pr;
 
 //what our constructor needs
 //title
@@ -102,16 +103,16 @@ function addBook (request, response) {
   let {title, author, description, image_url, ISBN_13} = request.body;
   let SQL = 'INSERT INTO books (title, author, description, image_url, ISBN_13) VALUES ($1,$2,$3,$4,$5);';
   let values = [title, author, description, image_url, ISBN_13];
- return client.query(SQL, values)
-    .then(result=>{ 
-      SQL = "SELECT * from books WHERE ISBN_13=$1";
+  return client.query(SQL, values)
+    .then(result=>{
+      SQL = 'SELECT * from books WHERE ISBN_13=$1';
       values=[ISBN_13];
       return client.query(SQL, values)
-      .then (resultNext => {
-        return response.render('pages/searches/showOne', {book: resultNext.rows[0]})
-      })
+        .then (resultNext => {
+          return response.render('pages/books/showOne', {book: resultNext.rows[0]})
+        })
 
-      
+
       //reaching a stopping point will come back
       // response.render('/pages/');
     })
@@ -123,12 +124,11 @@ function showBook(request,response){
 }
 
 function getOneBook (request, response) {
-  console.log('book_id = ', request.params.book_id);
   let SQL = `SELECT * FROM books where id=$1;`;
   let values = [request.params.book_id];
   return client.query(SQL,values)
     .then(result=> {
-      return response.render('pages/showOne', {book : result.rows[0]});
+      return response.render('pages/books/showOne', {book : result.rows[0]});
     })
     .catch(err => handleError(err, response));
 }

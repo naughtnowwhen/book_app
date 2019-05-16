@@ -24,6 +24,10 @@
             <h3><%= item.title %></h3>
             <h4><%= item.author %></h4>
             <p><%= item.description %></p>
+            <p><%=item.id%></p>
+            <form action="/books/<%=item.id%>">
+              <input type="submit" value="fire away">
+            </form>
           </div>
         <% }) %>
       </ul>
