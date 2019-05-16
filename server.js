@@ -11,12 +11,21 @@ const bodyParser = require('body-parser');
 //Application Setup
 const app = express();
 const PORT = process.env.PORT || 3000;
+const methodOverride = require('method-override');
 
 
 //Application Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('./public'));
 app.use(bodyParser.json());
+app.use(methodOverride((request, response)=> {
+  if(request.body && typeof request.body === 'object' && '_method' in request.body){
+    let method = request.body._method;
+    delete request.body._method;
+    return method;
+  }
+}))
+
 
 
 //Database setup
@@ -30,6 +39,8 @@ app.set('view engine', 'ejs');
 
 //API Routes
 //Renders the search form
+
+
 
 app.get('/', (request, response) => {
   //   //console.log('getting here');
@@ -49,6 +60,7 @@ app.get('/add', showBook);
 app.post('/add', addBook);
 
 app.post('/displayOne', displayOnePost);
+app.put('/update/:book_id', updateBook);
 
 function displayOnePost (req, res) {
   //however here its breaking, the json is being broken up into bits on the url's = characters!
@@ -145,6 +157,18 @@ function getAllStoredBooks(request, response) {
     })
 }
 
+
+function updateBook(request, response){
+  let{title, author, description, ISBN_13, image_url, bookshelf} = request.body;
+  let SQL = `UPDATE books SET title=$1, author=$2, description=$3, ISBN_13=$4 image_url=$5, bookshelf=$6 WHERE id=$7;`;
+  let values = [title, author, description, ISBN_13, image_url, bookshelf, request.params.book_id];
+
+  client.query(SQL, values)
+  .then(response.redirect('/books/${request.params.book_id}'))
+  .catch(err => handleError(err, response));
+
+
+}
 
 // app.post('/contact', (request, response)=>{
 //   console.log('', {root: './public'})
