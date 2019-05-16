@@ -16,7 +16,7 @@
 
 
     </script>
-    <% searchResults.forEach(item => { %>
+    <%= searchResults.forEach((item) => { %>
 
     <div id=<%= item.ISBN_13 %>>
       <img src=<%=item.image_url %>p <h3><%= item.title %></h3>
@@ -25,13 +25,15 @@
       <p><%= item.description %></p>
     </div>
 
-    <form action="/add" method="POST" id="form<%=item.ISBN_13%>" style="display:none">
-      <input type="text" name="ISBN_13" value="<%=item.ISBN_13%>">
-      <input type="text" name="title" value="<%=item.title%>">
-      <input type="text" name="author" value="<%=item.author%>">
+    <form action="<%= 'formAction === 'UPDATE' ? `/update/${book.id}` : '/add' %> "  method="POST" id="form<%=item.ISBN_13%>" style="display:none">
+      <input type="hidden" name "_method" value="<%= 'update' === formAction ? 'put' : 'post' %>">
+      <input type="text" name="ISBN_13" value="<%= item.ISBN_13%>" placeholder="Book isbn">
+      <input type="text" name="title" value="<%= item.title%>" placeholder="Book Name">
+      <input type="text" name="author" value="<%= item.author%>" placeholder="Author">
       <!-- for some reason authors not working -->
-      <input type="text" name="description" value="<%=item.description%>">
-      <input type="text" name="image_url" value="<%=item.image_url%>">
+      <input type="text" name="description" placeholder="DEscription of the book" cols="30"
+      rows="10"> <%= item.description %> </textarea>
+      <input type="text" name="image_url" value="<%= item.image_url%>">
       <input type="submit" value="click me to add to the DB" id="">
      
 
@@ -39,15 +41,19 @@
       
     </form>
     <!-- this is bad and should be extraplated to one button that each book can call, but quick and dirty MVP for now -->
-    <button onclick="(function(){
-      console.log('anything');
-      console.log('form<%=item.ISBN_13%>');
-      document.getElementById('form<%=item.ISBN_13%>').style.display='block';
-      })()">click to view detail</button>
-    <% }) %>
+    <% }); %>
   </ul>
 
+ 
 
+ <script>
+    function clicker(whichOne) {
+      whichone.toString();
+      console.log('hitting');
+      console.log(`form${whichOne}`);
+      $(`#form${whichOne}`).css('display', 'block');
+    }
+  </script>
   
 
   <!-- jquery cdn -->
