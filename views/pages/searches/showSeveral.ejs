@@ -8,57 +8,48 @@
   <title>Document</title>
 </head>
 
-<body>
-  <h1>Our Book List</h1>
-  <p><a href="/">Home</a></p>
-  <ul>
-    <script>
+<h1>Our Book List</h1>
+<p><a href="/">Home</a></p>
 
 
-    </script>
-    <%= searchResults.forEach((item) => { %>
-
-    <div id=<%= item.ISBN_13 %>>
-      <img src=<%=item.image_url %>p <h3><%= item.title %></h3>
-      <!-- for some reason authors not working -->
-      <h4><%= item.author %></h4>
-      <p><%= item.description %></p>
-    </div>
-
-    <form action="<%= 'formAction === 'UPDATE' ? `/update/${book.id}` : '/add' %> "  method="POST" id="form<%=item.ISBN_13%>" style="display:none">
-      <input type="hidden" name "_method" value="<%= 'update' === formAction ? 'put' : 'post' %>">
-      <input type="text" name="ISBN_13" value="<%= item.ISBN_13%>" placeholder="Book isbn">
-      <input type="text" name="title" value="<%= item.title%>" placeholder="Book Name">
-      <input type="text" name="author" value="<%= item.author%>" placeholder="Author">
-      <!-- for some reason authors not working -->
-      <input type="text" name="description" placeholder="DEscription of the book" cols="30"
-      rows="10"> <%= item.description %> </textarea>
-      <input type="text" name="image_url" value="<%= item.image_url%>">
-      <input type="submit" value="click me to add to the DB" id="">
-     
+<ul id="bookList">
+  <% searchResults.forEach(item => { %>
+  <div id=<%= item.ISBN_13 %>>
+    <img src=<%= item.image_url %>>
+    <h3><%= item.title %></h3>
+    <!-- for some reason authors not working -->
+    <h4> <%= item.author %></h4>
+    <p> <%= item.description %></p>
+    <button onclick="clicker('<%= item.ISBN_13 %>')"> click to reveal what's hidden </button>
+  </div>
 
 
-      
+  <form action="<%= formAction === 'UPDATE' ? `/update/${book.id}` : '/add' %> " method="POST" id="form<%=item.ISBN_13%>" style="display:none">
+    <input type="hidden" name = "_method" value="<%- formAction === 'update' ? 'put' : 'post' %>">
+    <input type="text" name="ISBN_13" value="<%- item.ISBN_13%>" placeholder="Book isbn">
+    <input type="text" name="title" value="<%- item.title%>" placeholder="Book Name">
+    <input type="text" name="author" value="<%- item.author%>" placeholder="Author">
+    <input type="text" name="description" placeholder="DEscription of the book" cols="30"
+    rows="10" value="<%- item.description %>"> 
+    <input type="text" name="image_url" value="<%- item.image_url%>">
+    <input type="submit" value="click me to add to the DB" id="">
     </form>
-    <!-- this is bad and should be extraplated to one button that each book can call, but quick and dirty MVP for now -->
-    <% }); %>
-  </ul>
 
- 
+  <!-- this is bad and should be extraplated to one button that each book can call, but quick and dirty MVP for now -->
+  <% }); %>
+</ul>
 
- <script>
-    function clicker(whichOne) {
-      whichone.toString();
-      console.log('hitting');
-      console.log(`form${whichOne}`);
-      $(`#form${whichOne}`).css('display', 'block');
-    }
-  </script>
-  
 
-  <!-- jquery cdn -->
-  <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-    crossorigin="anonymous"></script>
+
+<script>
+  function clicker(whichOne) {
+    // whichone.toString();
+    $(`#form${whichOne}`).css('display', 'block');
+  }
+</script>
+<!-- jquery cdn -->
+<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
 
 </body>
 
