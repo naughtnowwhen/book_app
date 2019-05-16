@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+
+<script>
+console.log('<%= book.ISBN_13 %>')
+console.log('stop here');
+
+</script>
+
+        <img src=<%=book.image_url %>>
+        <h3>Title : <%= book.title %></h3>
+        <h4> Author : <%= book.author %></h4>
+        <h5> ISBN :  <%= book.isbn_13 %></h5>
+        <p> <%= book.description %></p>
+        <form action="/allstoredbooks">
+          <input type="submit" value="take me back to my saved books">
+        </form>
+        
+  
+</body>
+</html>
