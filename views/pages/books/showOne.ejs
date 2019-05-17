@@ -1,25 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <%- include('../../layout/head.ejs'); %> 
+  <%- include('../../layout/head.ejs'); %>
 </head>
+
 <body>
 
-<script>
-console.log('<%= book.ISBN_13 %>')
-console.log('stop here');
-
-</script>
-
-        <img src=<%=book.image_url %>>
-        <h3>Title : <%= book.title %></h3>
-        <h4> Author : <%= book.author %></h4>
-        <h5> ISBN :  <%= book.isbn_13 %></h5>
-        <p> <%= book.description %></p>
-        <form action="/allstoredbooks">
-          <input type="submit" value="take me back to my saved books">
-        </form>
-        
+  <img src=<%=book.image_url %>>
+  <h3>Title : <%= book.title %></h3>
+  <h4> Author : <%= book.author %></h4>
+  <h5> ISBN : <%= book.isbn_13 %></h5>
+  <p> <%= book.description %></p>
+  <p>for testing purposes <%= book.id %></p>
   
+  <form action="/update/<%=book.id%>" method="post" style="display:none" id="updater">
+    <input type="hidden" name="_method" value="PUT">
+    <input type="text" name="ISBN_13" value="<%= book.isbn_13 %>" placeholder="Book isbn">
+    <input type="text" name="title" value="<%= book.title%>" placeholder="Book Name">
+    <input type="text" name="author" value="<%- book.author%>" placeholder="Author">
+    <input type="text" name="description" placeholder="Description of the book" cols="30" rows="10"
+      value="<%- book.description %>">
+    <input type="text" name="image_url" value="<%= book.image_url %>">
+
+    <input type="submit" value="submit changes">
+  </form>
+  <button id="showForm" onclick="reveal()">update <%= book.title%></button>
+
+
+  <form action="/allstoredbooks">
+    <input type="submit" value="take me back to my saved books">
+  </form>
+
+  <script>
+    function reveal() {
+      document.getElementById('updater').style.display = 'block';
+      document.getElementById('showForm').style.display='none';
+    }
+  </script>
+
 </body>
+
 </html>

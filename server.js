@@ -19,6 +19,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('./public'));
 app.use(bodyParser.json());
 app.use(methodOverride((request, response)=> {
+  console.log(request.body);
+  console.log('hitting');
   if(request.body && typeof request.body === 'object' && '_method' in request.body){
     let method = request.body['_method'];
     delete request.body['_method'];
@@ -61,6 +63,8 @@ app.post('/add', addBook);
 
 app.post('/displayOne', displayOnePost);
 app.put('/update/:book_id', updateBook);
+//for testing only! 
+// app.post('/update/:book_id', updateBook);
 
 function displayOnePost (req, res) {
   //however here its breaking, the json is being broken up into bits on the url's = characters!
@@ -75,15 +79,13 @@ function searchGoogleBooks(request, response) {
 
   let url = 'https://www.googleapis.com/books/v1/volumes?q=';
 
-  console.log(request.body)
   if (request.body.search[1] === 'title') { url += `+intitle:${request.body.search[0]}`; }
   if (request.body.search[1] === 'author') { url += `+inauthor:${request.body.search[0]}`; }
 
   superagent.get(url)
     .then(rawApiBookResponse => rawApiBookResponse.body.items.map(book => new Book(book.volumeInfo)))
     .then(results => {
-      console.log(results);
-      response.render('pages/searches/showSeveral', {formAction : 'post',  searchResults: results})})
+      response.render('pages/searches/showSeveral', {formAction : 'post', searchResults: results})})
     .catch(err => handleError(err, response))
 }
 
@@ -106,14 +108,12 @@ function Book(rawBookinfo) {
   this.description = rawBookinfo.description ? rawBookinfo.description : 'No description available';
   this.image_url = rawBookinfo.imageLinks ? rawBookinfo.imageLinks.thumbnail : 'https://i.imgur.com/J5LVHEL.jpg';
   rawBookinfo.industryIdentifiers[0].identifier ? this.ISBN_13 = rawBookinfo.industryIdentifiers[0].identifier : 'isbn unavailable';
-  console.log(this.image_url[4]);
   if (this.image_url[4] === ':'){
     this.image_url = this.image_url.replace('http', 'https');
   }
 }
 
 function addBook (request, response) {
-  console.log('request body line 86............ ', request.body);
   let {title, author, description, image_url, ISBN_13} = request.body;
   let SQL = 'INSERT INTO books (title, author, description, image_url, ISBN_13) VALUES ($1,$2,$3,$4,$5);';
   let values = [title, author, description, image_url, ISBN_13];
@@ -161,15 +161,13 @@ function getAllStoredBooks(request, response) {
 
 
 function updateBook(request, response){
-  let{title, author, description, ISBN_13, image_url, bookshelf} = request.body;
-  let SQL = `UPDATE books SET title=$1, author=$2, description=$3, ISBN_13=$4 image_url=$5, bookshelf=$6 WHERE id=$7;`;
-  let values = [title, author, description, ISBN_13, image_url, bookshelf, request.params.book_id];
-
+  let{title, author, description,image_url, ISBN_13} = request.body;
+  let SQL = `UPDATE books SET title=$1, author=$2, description=$3, image_url=$4, ISBN_13=$5 WHERE id=$6;`;
+  let values = [title, author, description,image_url , ISBN_13, request.params.book_id];
+  console.log('stop here');
   client.query(SQL, values)
-  .then(response.redirect('/books/${request.params.book_id}'))
-  .catch(err => handleError(err, response));
-
-
+    .then(response.redirect(`/books/${request.params.book_id}`))
+    .catch(err => handleError(err, response));
 }
 
 // app.post('/contact', (request, response)=>{
@@ -180,7 +178,7 @@ function updateBook(request, response){
 
 
 function handleError(error, response){
-  console.log(error);
+  console.error(error);
   // response.render('pages/error/', {error: 'Something went wrong'});
 }
 
