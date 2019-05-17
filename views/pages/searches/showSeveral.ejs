@@ -29,7 +29,6 @@
     <input type="text" name="description" placeholder="DEscription of the book" cols="30"
     rows="10" value="<%- item.description %>"> 
     <input type="text" name="image_url" value="<%- item.image_url%>">
-    <input type="submit" value="click me to add to the DB" id="">
     <button onclick="clicker('<%= item.ISBN_13 %>')"><%- 'update' === formAction ? "Update This Book" : "Add This Book" %></button>
     </form>
   <!-- this is bad and should be extraplated to one button that each book can call, but quick and dirty MVP for now -->
