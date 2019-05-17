@@ -1,0 +1,23 @@
+<section class="detail-form">
+    <form action="/update/<%=book.id %>" method="post">
+      <input type="hidden" name="_method" value="PUT">
+      
+      <input name="title" class="text-input"  name="search" value="<%= book.title %>" required>
+      <input name="author" class="text-input"  name="search" value="<%= book.author %>" required>
+      <input name="isbn" class="text-input"  name="search" value="<%= book.ISBN_13%>" required>
+      <input name="image_url" class="text-input"  name="search" value="<%= book.image_url %>" required>
+      <textarea name="description" class="text-input"  cols="30" rows="10" required><%= book.description %></textarea>
+      <input name="bookshelf" class="text-input"  name="search" placeholder="Enter bookshelf name" required>
+      <input  type="submit" id="add-form-submit" value="Add to Database">
+    </form>
+    </section>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
