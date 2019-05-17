@@ -2,10 +2,7 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+    <%- include('../../layout/head.ejs'); %> 
 </head>
 
 <h1>Our Book List</h1>
@@ -23,7 +20,7 @@
     <button onclick="clicker('<%= item.ISBN_13 %>')"> click to reveal what's hidden </button>
   </div>
 
-
+  <h2 class="view-title"><%- 'update' === formAction ? "Update Task" : "Add A Book" %></h2>
   <form action="<%= formAction === 'UPDATE' ? `/update/${book.id}` : '/add' %> " method="POST" id="form<%=item.ISBN_13%>" style="display:none">
     <input type="hidden" name = "_method" value="<%- formAction === 'update' ? 'put' : 'post' %>">
     <input type="text" name="ISBN_13" value="<%- item.ISBN_13%>" placeholder="Book isbn">
@@ -33,11 +30,14 @@
     rows="10" value="<%- item.description %>"> 
     <input type="text" name="image_url" value="<%- item.image_url%>">
     <input type="submit" value="click me to add to the DB" id="">
+    <button onclick="clicker('<%= item.ISBN_13 %>')"><%- 'update' === formAction ? "Update This Book" : "Add This Book" %></button>
     </form>
-
   <!-- this is bad and should be extraplated to one button that each book can call, but quick and dirty MVP for now -->
   <% }); %>
 </ul>
+
+  
+
 
 
 

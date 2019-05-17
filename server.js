@@ -20,9 +20,9 @@ app.use(express.static('./public'));
 app.use(bodyParser.json());
 app.use(methodOverride((request, response)=> {
   if(request.body && typeof request.body === 'object' && '_method' in request.body){
-    let method = request.body._method;
-    delete request.body._method;
-    return method;
+    let method = request.body['_method'];
+    delete request.body['_method'];
+    return method;//returns PUT, POST, GET or DELETE
   }
 }))
 

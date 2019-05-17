@@ -1,9 +1,26 @@
-p {
-  color: red;
-  text-align: center;
+* {
+  box-sizing: border-box;
 }
 
-* {
-  color: aqua;
-  background-color: blueviolet;
+body {
+  background-color: #808080;
+  width: 100%;
+  align-content: center;
+}
+
+@media screen and (max-width: 480px) {
+  body {
+    background-color: lightgrey;
+  }
+}
+
+h1 {
+  font-family: 'Thasadith', sans-serif;
+  font-family: 'Staatliches', cursive;
+  text-align: center;
+  font-size: 40px;
+}
+
+a:link {
+  text-decoration: none;
 }
