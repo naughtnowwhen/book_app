@@ -1,32 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <%- include('../../layout/head.ejs'); %> 
-</head>
-<body>  
-    <header>
-        <form action="/prepareToSearchFromAPI"> make a new search from the Google Books API
-          <input type="submit">
-        </form>
-      </header>
 
+<head>
+  <%- include('../../layout/head.ejs'); %>
+</head>
+
+<body>
+  <header>
+    <form action="/prepareToSearchFromAPI"> make a new search from the Google Books API
+      <input type="submit">
+    </form>
+  </header>
+
+  <form action="/deleteAll">
+    <input type="submit" value="remove All books from your collection">
+  </form>
 
   <h1>here are all your books</h1>
-      <p><a href="/">Home</a></p>
-      <h4>you have saved <%= databaseResults.length %> books </h4>
-      <ul>
-        <% databaseResults.forEach(item => { %>
-          <div id = <%= item.ISBN_13 %>>
-            <img src=<%=item.image_url %>p
-            <h3><%= item.title %></h3>
-            <h4><%= item.author %></h4>
-            <p><%= item.description %></p>
-            <p><%=item.id%></p>
-            <form action="/books/<%=item.id%>">
-              <input type="submit" value="fire away">
-            </form>
-          </div>
-        <% }) %>
-      </ul>
+  <p><a href="/">Home</a></p>
+  <h4>you have saved <%= databaseResults.length %> books </h4>
+  <ul>
+    <% if (databaseResults.length > 0) { %>
+    <% databaseResults.forEach(item => { %>
+    <div id=<%= item.ISBN_13 %>>
+      <img src=<%=item.image_url %>p <h3><%= item.title %></h3>
+      <h4><%= item.author %></h4>
+      <p><%= item.description %></p>
+      <p><%=item.id%></p>
+      <form action="/books/<%=item.id%>">
+        <input type="submit" value="view the book">
+      </form>
+      <form action="/delete/<%=item.id%>" method="post" id="deleter">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="submit" value="remove the book">
+      </form>
+    </div>
+
+    <% }) %>
+  <% } %>
+
+  <%  if (databaseResults.length === 0) { %>
+    <div>
+      <h3>you don't have any books feel free to add them</h3>
+    </div>
+  <% } %>
+ 
+  </ul>
 </body>
+
 </html>
