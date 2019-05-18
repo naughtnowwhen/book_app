@@ -24,3 +24,34 @@ h1 {
 a:link {
   text-decoration: none;
 }
+
+
+#enter {
+  width: 20%; 
+  margin: auto;
+}
+  
+  
+
+.radio {
+  width: 20%; 
+  padding: 8px;
+ 
+  
+}  
+
+.button {
+  background-color: lightblue;
+  padding: 8px;
+  color: #ffffff;
+  width: 20%; 
+  
+}
+
+h4 {
+  color: #000000;
+  font-family: 'Thasadith', sans-serif;
+  font-family: 'Staatliches', cursive;
+}
+  
+  

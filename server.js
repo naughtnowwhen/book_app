@@ -198,16 +198,13 @@ function deleteAll (request, response){
     })
 }
 
-// app.post('/contact', (request, response)=>{
-//   console.log('', {root: './public'})
-// });
 
 //catch-all
 
 
 function handleError(error, response){
   console.error(error);
-  // response.render('pages/error/', {error: 'Something went wrong'});
+  //response.render('pages/error/', {error: 'Something went wrong'});
 }
 
 app.get('*', (request, response)=>response.status(404).send('This route does not exist'));
