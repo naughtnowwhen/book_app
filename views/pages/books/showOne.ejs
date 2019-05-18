@@ -22,10 +22,15 @@
     <input type="text" name="description" placeholder="Description of the book" cols="30" rows="10"
       value="<%- book.description %>">
     <input type="text" name="image_url" value="<%= book.image_url %>">
-
     <input type="submit" value="submit changes">
   </form>
-  <button id="showForm" onclick="reveal()">update <%= book.title%></button>
+
+  <form action="/delete/<%=book.id%>" method="post" id="deleter">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="submit" value="remove the book">
+  </form>
+
+  <button id="showForm" onclick="reveal()">update / add <%= book.title%></button>
 
 
   <form action="/allstoredbooks">

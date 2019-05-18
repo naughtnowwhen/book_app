@@ -63,8 +63,11 @@ app.post('/add', addBook);
 
 app.post('/displayOne', displayOnePost);
 app.put('/update/:book_id', updateBook);
-//for testing only! 
+//for testing only!
 // app.post('/update/:book_id', updateBook);
+
+app.delete('/delete/:book_id', deleteBook);
+app.get('/deleteAll', deleteAll);
 
 function displayOnePost (req, res) {
   //however here its breaking, the json is being broken up into bits on the url's = characters!
@@ -155,7 +158,10 @@ function getAllStoredBooks(request, response) {
   let SQL = `SELECT * FROM books`;
   return client.query(SQL)
     .then(result=>{
-      return response.render('pages/searches/allSavedBooks', {databaseResults : result.rows})
+      if (result.rows.length > 0) {
+        return response.render('pages/searches/allSavedBooks', {databaseResults : result.rows})
+      }
+      else return response.render('pages/searches/allSavedBooks', )
     })
 }
 
@@ -168,6 +174,28 @@ function updateBook(request, response){
   client.query(SQL, values)
     .then(response.redirect(`/books/${request.params.book_id}`))
     .catch(err => handleError(err, response));
+}
+
+function deleteBook (request, response) {
+  let SQL = 'DELETE FROM books where id=$1;';
+  let values = [request.params.book_id];
+  return client.query(SQL, values)
+    .then(deleted => {
+      SQL = 'SELECT * FROM books;';
+      client.query(SQL)
+        .then(resultNext => {
+          response.render(`pages/searches/allSavedBooks`, {databaseResults : resultNext.rows})
+            .catch(err => handleError(err))
+        })
+    })
+}
+
+function deleteAll (request, response){
+  let SQL = 'DELETE FROM books';
+  client.query(SQL)
+    .then(results=>{
+      response.render('pages/searches/allSavedBooks'), {databaseResults : results.rows}
+    })
 }
 
 // app.post('/contact', (request, response)=>{

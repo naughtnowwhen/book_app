@@ -7,7 +7,9 @@
 
 <h1>Our Book List</h1>
 <p><a href="/">Home</a></p>
-
+<form action="/delete" method="GET">
+  <input type="submit" value="remove All books from your collection">
+</form>
 
 <ul id="bookList">
   <% searchResults.forEach(item => { %>
