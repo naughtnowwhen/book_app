@@ -1,0 +1,15 @@
+<section class= detail>
+  <h2 class="view-title"><%- 'update' === formAction ? "Update Task" : "Add A Book" %></h2>
+  <form action="<%= formAction === 'UPDATE' ? `/update/${book.id}` : '/add' %> " method="POST" id="form<%=item.ISBN_13%>" style="display:none">
+    <input type="hidden" name = "_method" value="<%- formAction === 'update' ? 'put' : 'post' %>">
+    <input type="text" name="ISBN_13" value="<%- item.ISBN_13%>" placeholder="Book isbn">
+    <input type="text" name="title" value="<%- item.title%>" placeholder="Book Name">
+    <input type="text" name="author" value="<%- item.author%>" placeholder="Author">
+    <input type="text" name="description" placeholder="DEscription of the book" cols="30"
+    rows="10" value="<%- item.description %>"> 
+    <input type="text" name="image_url" value="<%- item.image_url%>">
+    <button onclick="clicker('<%= item.ISBN_13 %>')"><%- 'update' === formAction ? "Update This Book" : "Add This Book" %></button>
+    </form>
+</section>
+
+<%- include('update', {formAction}) %>

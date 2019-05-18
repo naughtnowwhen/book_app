@@ -1,34 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>our Document</title>
+  <%- include('../../layout/head.ejs'); %>
+  
 </head>
 <body>
+  <%- include('../../layout/header.ejs'); %>
   <main>
       <h1>Hello</h1>
       <h4>Search by Title or Author</h4>
       <form action="/searches" method="POST">
-        <input type="text" name="search" placeholder="Enter title or author" required>
-        <fieldset>
+        <input type="text" name="search" placeholder="Enter title or author" id="enter" required>
+        <fieldset class="radio">
           <label for="title">
             <span>Title</span>
             <input type="radio" name="search" value="title" required>
           </label>
         </fieldset>
-        <fieldset>
+        <fieldset class=radio>
           <label for="author">
             <span>Author</span>
             <input type="radio" name="search" value="author" required>
           </label>
         </fieldset>
-        <button type="submit"> search the google books api</button>
+        <button type="submit" class="button"> search the google books api</button>
       </form>
 
       <form action="/allstoredbooks">
-           <button type="submit"> all saved books</button>
+           <button type="submit" class="button"> all saved books</button>
       </form>
 
   </main>
